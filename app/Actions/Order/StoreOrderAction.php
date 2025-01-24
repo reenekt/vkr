@@ -31,6 +31,8 @@ class StoreOrderAction
             'payment_system' => $data['payment_system'],
             'payment_status' => OrderPaymentStatusEnum::NOT_PAID,
             'delivery_method' => $data['delivery_method'],
+            'need_design_service' => $data['need_design_service'],
+            'need_montage_service' => $data['need_montage_service'],
         ]);
     }
 

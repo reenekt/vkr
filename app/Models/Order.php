@@ -26,6 +26,8 @@ use Illuminate\Support\Carbon;
  * @property int|null $payment_system ID платежной системы (при оплате картой онлайн)
  * @property OrderPaymentStatusEnum $payment_status Статус оплаты
  * @property OrderDeliveryMethodEnum $delivery_method Способ доставки
+ * @property bool $need_design_service Требуется ли услуга проектирования
+ * @property bool $need_montage_service Требуется ли услуга монтажа
  * @property Carbon $created_at Дата создания
  * @property Carbon $updated_at Дата изменения
  * @property-read Collection<int,OrderItem>|OrderItem[] $items Позиции (товары) заказа
@@ -44,6 +46,8 @@ class Order extends Model
         'payment_system',
         'payment_status',
         'delivery_method',
+        'need_design_service',
+        'need_montage_service',
     ];
 
     protected $casts = [
@@ -51,6 +55,8 @@ class Order extends Model
         'payment_method' => OrderPaymentMethodEnum::class,
         'payment_status' => OrderPaymentStatusEnum::class,
         'delivery_method' => OrderDeliveryMethodEnum::class,
+        'need_design_service' => 'boolean',
+        'need_montage_service' => 'boolean',
     ];
 
     protected $appends = [

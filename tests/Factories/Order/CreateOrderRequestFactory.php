@@ -15,6 +15,8 @@ class CreateOrderRequestFactory extends BaseRequestDataFactory
             'payment_method' => $this->faker->randomElement(OrderPaymentMethodEnum::cases())->value,
             'payment_system' => null, // TODO
             'delivery_method' => $this->faker->randomElement(OrderDeliveryMethodEnum::cases())->value,
+            'need_design_service' => $this->faker->boolean(),
+            'need_montage_service' => $this->faker->boolean(),
             'deliveries' => [
                 [
                     'delivery_price' => $this->faker->randomFloat(2, 0, 1000),

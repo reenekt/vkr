@@ -24,6 +24,8 @@ class OrderResource extends JsonResource
             'payment_system' => $this->payment_system,
             'payment_status' => $this->payment_status,
             'delivery_method' => $this->delivery_method,
+            'need_design_service' => $this->need_design_service,
+            'need_montage_service' => $this->need_montage_service,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
 

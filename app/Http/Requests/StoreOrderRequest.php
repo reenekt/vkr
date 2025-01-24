@@ -21,6 +21,8 @@ class StoreOrderRequest extends FormRequest
             'payment_method' => ['required', new Enum(OrderPaymentMethodEnum::class)],
             'payment_system' => ['nullable', 'integer'],
             'delivery_method' => ['required', new Enum(OrderDeliveryMethodEnum::class)],
+            'need_design_service' => ['required', 'boolean'],
+            'need_montage_service' => ['required', 'boolean'],
 
             'deliveries' => ['required', 'array', 'min:1'],
             'deliveries.*.delivery_price' => ['required', 'decimal:0,2', 'gte:0'],
