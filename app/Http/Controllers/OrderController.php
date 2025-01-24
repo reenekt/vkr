@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\Order\StoreOrderAction;
 use App\Actions\Order\UpdateOrderAction;
+use App\Http\Queries\OrdersQuery;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Resources\OrderResource;
@@ -15,9 +16,9 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): AnonymousResourceCollection
+    public function index(OrdersQuery $query): AnonymousResourceCollection
     {
-        return OrderResource::collection(Order::query()->with(['items', 'deliveries', 'deliveries.items'])->paginate(10));
+        return OrderResource::collection($query->paginate(10));
     }
 
     /**
