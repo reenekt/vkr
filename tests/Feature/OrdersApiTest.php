@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\DeliveryStatusEnum;
+use App\Enums\OrderDeliveryMethodEnum;
 use App\Enums\OrderPaymentMethodEnum;
 use App\Enums\OrderPaymentStatusEnum;
 use App\Enums\OrderStatusEnum;
@@ -28,6 +29,48 @@ test('GET /api/order 200', function () {
     getJson('/api/order')
         ->assertStatus(200)
         ->assertJsonCount(1, 'data');
+});
+
+test('GET /api/order 200 with filters', function ($fieldName, $fieldValue, $filterKey = null, $filterValue = null) {
+    if ($filterKey === null && $filterValue === null) {
+        $filterKey = $fieldName;
+        $filterValue = $fieldValue;
+    }
+
+    $order = Order::factory()->create([
+        $fieldName => $fieldValue,
+    ]);
+
+    $query = http_build_query([
+        'filters' => [$filterKey => $filterValue]
+    ]);
+
+    getJson('/api/order?' . $query)
+        ->assertStatus(200)
+        ->assertJsonCount(1, 'data');
+})->with([
+    'filter by id' => ['id', 55],
+    'filter by customer_id' => ['customer_id', 64],
+    'filter by status' => ['status', OrderStatusEnum::DONE->value],
+    'filter by payment_method' => ['payment_method', OrderPaymentMethodEnum::ONLINE->value],
+//    'filter by payment_system' => ['payment_system', null],
+    'filter by payment_status' => ['payment_status', OrderPaymentStatusEnum::NOT_PAID->value],
+    'filter by delivery_method' => ['delivery_method', OrderDeliveryMethodEnum::OUR_DELIVERY_WITH_SERVICE],
+    'filter by need_design_service' => ['need_design_service', true],
+    'filter by need_montage_service' => ['need_montage_service', true],
+    'filter by created_at' => ['created_at', now(), 'created_at', [now()->subDay()->toJSON(), now()->addDay()->toJSON()]],
+    'filter by updated_at' => ['updated_at', now(), 'updated_at', [now()->subDay()->toJSON(), now()->addDay()->toJSON()]],
+]);
+
+test('GET /api/order 422 with not allowed filter', function () {
+    $order = Order::factory()->create();
+
+    $query = http_build_query([
+        'filters' => ['not_allowed_filter' => 123]
+    ]);
+
+    getJson('/api/order?' . $query)
+        ->assertStatus(422);
 });
 
 test('GET /api/order/{id} 200', function () {
